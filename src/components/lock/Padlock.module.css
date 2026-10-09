@@ -1,0 +1,160 @@
+/* Padlock.module.css — animated padlock for HMJ UNIMED login. */
+
+/* ── Wrapper ──────────────────────────────────────────────────── */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+@keyframes padlockExit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 2px 14px rgba(22, 132, 91, 0.22));
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.45);
+    filter: drop-shadow(0 4px 28px rgba(22, 132, 91, 0.32));
+  }
+}
+
+.exiting {
+  pointer-events: none;
+  transform-origin: center;
+  animation: padlockExit 560ms ease-in 360ms both;
+  will-change: transform, opacity;
+}
+
+/* ── SVG icon container ───────────────────────────────────────── */
+.icon {
+  width: 64px;
+  height: 80px;
+  /* overflow:visible lets the shackle animate outside its natural box */
+  overflow: visible;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.10));
+  transition: filter 400ms ease;
+}
+
+/* ── Body (rounded rectangle) ────────────────────────────────── */
+.body {
+  fill: var(--color-surface);
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  transition: fill 400ms ease;
+}
+
+/* ── Shackle (arc path) ───────────────────────────────────────── */
+.shackle {
+  stroke: var(--color-primary);
+  fill: none;
+  /* Allow transform to be relative to the element's own bounding box */
+  transform-box: fill-box;
+  transform-origin: 50% 100%; /* pivot at shackle base */
+}
+
+/* ── Keyhole ──────────────────────────────────────────────────── */
+.keyhole {
+  fill: var(--color-primary-soft);
+  transition: fill 400ms ease;
+}
+
+/* ── Label ────────────────────────────────────────────────────── */
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color 400ms ease;
+  /* Prevent layout shift when text changes between states */
+  min-height: 1.5em;
+  text-align: center;
+}
+
+/* Keep keyframes module-scoped so CSS Modules hashes definitions and references alike. */
+@keyframes padlockShackleUnlock {
+  /*
+   * The path `d` is already set to the OPEN position in the DOM.
+   * We simulate the shackle rising by starting it translated DOWN
+   * (to match the closed visual) and easing it to its natural position.
+   *
+   * Closed shackle top ≈ y=22; Open shackle top ≈ y=14 → delta = 8 SVG units.
+   * We also add a slight counter-clockwise rotation for a natural lifting feel.
+   */
+  0%   { transform: translateY(8px)  rotate(0deg);    opacity: 0.75; }
+  50%  { transform: translateY(-3px) rotate(-4deg);   opacity: 1; }
+  72%  { transform: translateY(1px)  rotate(1deg); }
+  88%  { transform: translateY(-0.5px) rotate(-0.5deg); }
+  100% { transform: translateY(0)    rotate(0deg);    opacity: 1; }
+}
+
+@keyframes padlockBodyUnlock {
+  0%   { fill: var(--color-surface); }
+  55%  { fill: var(--color-primary-soft); }
+  100% { fill: var(--color-primary-soft); }
+}
+
+@keyframes padlockIconGlow {
+  0%   { filter: drop-shadow(0 2px 8px  rgba(0,  0,   0,   0.10)); }
+  100% { filter: drop-shadow(0 2px 16px rgba(22, 132, 91, 0.30)); }
+}
+
+/* Shackle animation — applied by tsx when isAnimating && !prefersReducedMotion */
+.shackleAnimating {
+  animation: padlockShackleUnlock 680ms cubic-bezier(0.34, 1.28, 0.64, 1) both;
+}
+
+/* Body and icon animations — triggered when wrapper has .animating */
+.animating .body {
+  animation: padlockBodyUnlock 680ms ease both;
+}
+
+.animating .icon {
+  animation: padlockIconGlow 680ms ease both;
+}
+
+/* ── Unlocked (stable open) ───────────────────────────────────── */
+.open .body {
+  fill: var(--color-primary-soft);
+}
+
+.open .icon {
+  filter: drop-shadow(0 2px 14px rgba(22, 132, 91, 0.25));
+  transition: filter 300ms ease;
+}
+
+.open .label {
+  color: var(--color-primary);
+}
+
+/* ── Reduced motion ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* All animations suppressed; state is advanced immediately in tsx. */
+  .shackleAnimating {
+    animation: none;
+  }
+
+  .exiting {
+    animation: none;
+    opacity: 0;
+  }
+
+  .animating .body {
+    animation: none;
+    fill: var(--color-primary-soft);
+  }
+
+  .animating .icon {
+    animation: none;
+  }
+
+  .label,
+  .body,
+  .keyhole,
+  .icon {
+    transition: none;
+  }
+}

@@ -1,0 +1,155 @@
+/* PuzzleBoard — styles for the 3×3 swap puzzle board. */
+
+/* Outer wrapper: column flex, centers everything */
+.wrapper {
+  --puzzle-board-size: min(288px, 86vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* 3×3 grid — all 9 cells always filled with tiles */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: var(--puzzle-board-size);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.boardStage {
+  position: relative;
+  width: var(--puzzle-board-size);
+  aspect-ratio: 1;
+}
+
+.boardStage .grid {
+  width: 100%;
+  height: 100%;
+}
+
+.particleLayer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  pointer-events: none;
+}
+
+.particleCell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+.particle {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: var(--opacity);
+  animation: particleDrift var(--duration) cubic-bezier(0.2, 0.65, 0.3, 1) var(--delay) both;
+  will-change: transform, opacity;
+}
+
+@keyframes particleDrift {
+  from {
+    opacity: var(--opacity);
+    transform: translate(0, 0) scale(0.75);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.25);
+  }
+}
+
+/* Controls row: move counter + reshuffle button */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--puzzle-board-size);
+  margin: 0 auto;
+  padding-top: 0;
+}
+
+/* Move counter text */
+.moveCounter {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+/* Reshuffle button */
+.reshuffleBtn {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: none;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.reshuffleBtn:hover:not(:disabled) {
+  background: var(--color-primary-soft);
+}
+
+.reshuffleBtn:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.reshuffleBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Hint shown while a tile is selected (first click done, waiting for second) */
+.selectionHint {
+  font-size: 12px;
+  color: var(--color-primary);
+  font-weight: 500;
+  text-align: center;
+  max-width: var(--puzzle-board-size);
+  line-height: 1.4;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-primary-subtle);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(22, 132, 91, 0.2);
+}
+
+/* Success message shown after solving */
+.successMsg {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-success);
+  text-align: center;
+  padding: 4px 0;
+}
+
+@media (max-width: 360px) {
+  .wrapper {
+    --puzzle-board-size: min(260px, 92vw);
+  }
+}
+
+@media (max-height: 640px) {
+  .wrapper {
+    gap: 5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particleLayer {
+    display: none;
+  }
+}

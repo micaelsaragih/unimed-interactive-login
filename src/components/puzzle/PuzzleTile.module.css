@@ -1,0 +1,110 @@
+/* PuzzleTile — styles for a single interactive puzzle tile (button). */
+
+.tile {
+  /* Reset button defaults */
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0;
+
+  /* Fill the grid cell */
+  width: 100%;
+  height: 100%;
+
+  cursor: pointer;
+
+  /* Border and shape */
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+
+  /* Background image set via inline style */
+  background-color: var(--color-primary-subtle);
+  background-repeat: no-repeat;
+
+  /* Transitions for hover/active/select feedback */
+  transition:
+    filter 140ms ease,
+    transform 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+/* ── Hover ────────────────────────────────────────────────────── */
+.tile:hover:not(:disabled):not(.selected) {
+  filter: brightness(1.07);
+  transform: scale(1.025);
+  border-color: var(--color-primary);
+}
+
+/* ── Active / pressed ─────────────────────────────────────────── */
+.tile:active:not(:disabled) {
+  transform: scale(0.96);
+  filter: brightness(0.94);
+}
+
+/* ── Selected (first tile clicked, waiting for swap partner) ──── */
+.selected {
+  border-color: var(--color-primary);
+  border-width: 2.5px;
+  box-shadow: 0 0 0 3px rgba(22, 132, 91, 0.25);
+  /* Slight brightness lift so it stands out */
+  filter: brightness(1.06) saturate(1.1);
+  transform: scale(1.03);
+  /* Keep the selection ring stable — no extra hover transform on top */
+  transition:
+    box-shadow 140ms ease,
+    border-color 140ms ease;
+}
+
+/* ── Focus-visible — keyboard navigation ─────────────────────── */
+.tile:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* ── Disabled (board locked after solve) ─────────────────────── */
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  /* Keep the image fully visible; just remove interactivity */
+}
+
+.dissolving {
+  pointer-events: none;
+  animation: tileDissolve 650ms ease-in both;
+}
+
+@keyframes tileDissolve {
+  to {
+    opacity: 0;
+    transform: scale(0.94);
+    filter: blur(2px);
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: border-color 100ms ease, box-shadow 100ms ease;
+  }
+
+  .tile:hover:not(:disabled):not(.selected) {
+    filter: none;
+    transform: none;
+  }
+
+  .tile:active:not(:disabled) {
+    transform: none;
+    filter: none;
+  }
+
+  .selected {
+    transform: none;
+    filter: none;
+  }
+
+  .dissolving {
+    animation-duration: 120ms;
+  }
+}

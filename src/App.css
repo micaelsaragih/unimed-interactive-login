@@ -1,0 +1,301 @@
+/* ============================================================
+   App.css — layout and page-level styles for HMJ UNIMED Login.
+   Uses design tokens from index.css.
+   ============================================================ */
+
+/* ── Root wrapper ─────────────────────────────────────────────── */
+.app-root {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+.app-background-video,
+.app-background-photo,
+.app-background-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.app-background-video,
+.app-background-photo {
+  z-index: -2;
+}
+
+.app-background-video {
+  object-fit: cover;
+  object-position: center;
+}
+
+.app-background-photo {
+  background-position: center 45%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: backgroundReveal 500ms ease both;
+}
+
+.app-background-overlay {
+  z-index: -1;
+  background:
+    linear-gradient(120deg, rgba(22, 132, 91, 0.2), rgba(22, 132, 91, 0.035) 50%, rgba(17, 107, 73, 0.18)),
+    linear-gradient(rgba(25, 37, 30, 0.08), rgba(25, 37, 30, 0.08));
+}
+
+.login-screen .app-background-overlay {
+  background:
+    linear-gradient(120deg, rgba(22, 132, 91, 0.17), rgba(22, 132, 91, 0.035) 52%, rgba(17, 107, 73, 0.15)),
+    linear-gradient(rgba(27, 35, 30, 0.14), rgba(27, 35, 30, 0.14));
+}
+
+.background-video-fallback {
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(22, 132, 91, 0.16), transparent 58%),
+    linear-gradient(135deg, #eef5ef, #fafbf9 58%, #e8f2eb);
+}
+
+@keyframes backgroundReveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+.app-header {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(225, 231, 225, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px var(--space-6);
+}
+
+.header-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.header-org {
+  font-size: clamp(19px, 3vw, 25px);
+  font-weight: 650;
+  color: var(--color-primary-hover);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+/* ── Main ─────────────────────────────────────────────────────── */
+.app-main {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 1.5vh, 16px) var(--space-4);
+  min-height: 0;
+}
+
+.login-main {
+  min-height: 100dvh;
+  align-items: center;
+  padding: clamp(var(--space-4), 5vh, var(--space-8)) var(--space-4);
+}
+
+.login-view {
+  display: grid;
+  width: 100%;
+  place-items: center;
+}
+
+/* ── Content card ─────────────────────────────────────────────── */
+.content-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: var(--radius-2xl);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: clamp(12px, 1.8vh, 18px) clamp(20px, 2.5vw, 28px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1.5vh, 16px);
+}
+
+.content-card-dissolving {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.content-card-dissolving .intro-section {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+/* ── Intro section ────────────────────────────────────────────── */
+.intro-section {
+  width: 100%;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 23px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* ── Puzzle section ───────────────────────────────────────────── */
+.puzzle-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Padlock section ──────────────────────────────────────────── */
+.padlock-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.padlock-hint {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-align: center;
+  max-width: 240px;
+  line-height: 1.45;
+}
+
+/* ── Responsive — tablet / mobile ─────────────────────────────── */
+@media (max-width: 600px) {
+  .app-main {
+    padding: 8px 12px;
+  }
+
+  .content-card {
+    padding: 12px 10px;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .login-main {
+    padding: var(--space-4);
+  }
+
+  .page-title {
+    font-size: 21px;
+  }
+
+  .header-org {
+    font-size: clamp(19px, 5.8vw, 23px);
+  }
+}
+
+@media (max-width: 400px) {
+  .app-header {
+    padding: 9px 12px;
+  }
+}
+
+@media (max-height: 640px) {
+  .app-header {
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+  .app-main {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .content-card {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    gap: 5px;
+  }
+
+  .page-title {
+    font-size: 19px;
+    margin-bottom: 2px;
+  }
+
+  .page-subtitle {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .padlock-section {
+    gap: 3px;
+  }
+
+  .padlock-section > div {
+    gap: 5px;
+  }
+
+  .padlock-section svg {
+    width: 56px;
+    height: 68px;
+  }
+
+  .padlock-section .padlock-hint {
+    font-size: 12px;
+    line-height: 1.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-background-photo {
+    animation: none;
+  }
+}
+
+/* ── Authenticated success banner ─────────────────────────────── */
+.auth-success-section {
+  width: 100%;
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(22, 132, 91, 0.25);
+}
+
+.auth-success-msg {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
