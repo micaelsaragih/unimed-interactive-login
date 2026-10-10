@@ -159,17 +159,6 @@ export default function App() {
       )}
       <div className="app-background-overlay" aria-hidden="true" />
 
-      {/* ── Header ─────────────────────────────────────────────── */}
-      {screen !== 'login' && (
-        <header className="app-header">
-          <div className="header-inner">
-            <div className="header-text">
-              <span className="header-org">Universitas Negeri Medan</span>
-            </div>
-          </div>
-        </header>
-      )}
-
       {/* ── Main ───────────────────────────────────────────────── */}
       <main className={`app-main${screen === 'login' ? ' login-main' : ''}`} id="main-content">
         {screen !== 'login' ? (

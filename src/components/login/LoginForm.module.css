@@ -4,20 +4,18 @@
 .section {
   width: 100%;
   box-sizing: border-box;
-  max-width: 380px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: var(--space-8);
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.85);
   border-radius: var(--radius-xl);
   border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 16px 40px rgba(32, 41, 35, 0.1), 0 3px 10px rgba(22, 132, 91, 0.06);
+  box-shadow: 0 16px 40px rgba(32, 41, 35, 0.12), 0 3px 10px rgba(22, 132, 91, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   animation: formReveal 420ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
-  /* Use flex column so heading, banner, and form have consistent spacing */
   display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  flex-direction: row;
+  overflow: hidden;
 }
 
 @keyframes formReveal {
@@ -31,11 +29,44 @@
   }
 }
 
-.brandLogo {
-  width: 76px;
-  height: 76px;
+.leftColumn {
+  flex: 1;
+  background: rgba(232, 245, 238, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  border-right: 1px solid rgba(22, 132, 91, 0.1);
+}
+
+.brandingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+.brandLogoLarge {
+  width: 140px;
+  height: 140px;
   object-fit: contain;
-  align-self: center;
+}
+
+.universityName {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-primary-hover);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.rightColumn {
+  flex: 1;
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 /* ── Heading ──────────────────────────────────────────────────── */
@@ -276,10 +307,28 @@
 }
 
 /* ── Responsive — narrow screens ─────────────────────────────── */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .section {
+    flex-direction: column;
+    max-width: 440px;
+  }
+  
+  .leftColumn {
     padding: var(--space-6) var(--space-4);
-    border-radius: var(--radius-lg);
-    max-width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(22, 132, 91, 0.1);
+  }
+  
+  .brandLogoLarge {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .universityName {
+    font-size: 18px;
+  }
+  
+  .rightColumn {
+    padding: var(--space-6) var(--space-4);
   }
 }

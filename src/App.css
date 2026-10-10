@@ -43,15 +43,11 @@
 
 .app-background-overlay {
   z-index: -1;
-  background:
-    linear-gradient(120deg, rgba(22, 132, 91, 0.2), rgba(22, 132, 91, 0.035) 50%, rgba(17, 107, 73, 0.18)),
-    linear-gradient(rgba(25, 37, 30, 0.08), rgba(25, 37, 30, 0.08));
+  background: linear-gradient(135deg, rgba(8, 20, 15, 0.4), rgba(12, 35, 22, 0.25));
 }
 
 .login-screen .app-background-overlay {
-  background:
-    linear-gradient(120deg, rgba(22, 132, 91, 0.17), rgba(22, 132, 91, 0.035) 52%, rgba(17, 107, 73, 0.15)),
-    linear-gradient(rgba(27, 35, 30, 0.14), rgba(27, 35, 30, 0.14));
+  background: rgba(12, 35, 22, 0.2);
 }
 
 .background-video-fallback {
@@ -65,38 +61,7 @@
   to { opacity: 1; }
 }
 
-/* ── Header ───────────────────────────────────────────────────── */
-.app-header {
-  position: relative;
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0.82);
-  border-bottom: 1px solid rgba(225, 231, 225, 0.8);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 10px var(--space-6);
-}
-
-.header-inner {
-  max-width: 720px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.header-text {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-}
-
-.header-org {
-  font-size: clamp(19px, 3vw, 25px);
-  font-weight: 650;
-  color: var(--color-primary-hover);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-}
+/* ── Header styles removed as per requirements ── */
 
 /* ── Main ─────────────────────────────────────────────────────── */
 .app-main {
@@ -126,17 +91,26 @@
 .content-card {
   width: 100%;
   max-width: 440px;
-  background: rgba(255, 255, 255, 0.86);
+  background: linear-gradient(135deg, rgba(22, 34, 28, 0.62), rgba(34, 47, 39, 0.48));
   border-radius: var(--radius-2xl);
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: clamp(12px, 1.8vh, 18px) clamp(20px, 2.5vw, 28px);
+  padding: clamp(16px, 2.5vh, 24px) clamp(24px, 3vw, 32px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(10px, 1.5vh, 16px);
+  gap: clamp(12px, 2vh, 20px);
+
+  /* Text-contrast overrides for dark smoked-glass background */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #e2e8f0;
+  --color-text-muted: #cbd5e1;
+  --color-primary: #34d399;
+  --color-success: #34d399;
 }
 
 .content-card-dissolving {
@@ -167,6 +141,7 @@
   color: var(--color-text-primary);
   margin-bottom: 4px;
   letter-spacing: -0.02em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .page-subtitle {
@@ -175,6 +150,7 @@
   line-height: 1.4;
   max-width: 320px;
   margin: 0 auto;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Puzzle section ───────────────────────────────────────────── */
@@ -221,22 +197,7 @@
     font-size: 21px;
   }
 
-  .header-org {
-    font-size: clamp(19px, 5.8vw, 23px);
-  }
-}
 
-@media (max-width: 400px) {
-  .app-header {
-    padding: 9px 12px;
-  }
-}
-
-@media (max-height: 640px) {
-  .app-header {
-    padding-top: 7px;
-    padding-bottom: 7px;
-  }
 
   .app-main {
     padding-top: 6px;

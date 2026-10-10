@@ -131,22 +131,29 @@ export function LoginForm({
 
   return (
     <section className={styles.section} aria-label="Formulir masuk">
-      <img
-        src="/assets/logo-unimed.png"
-        alt="Logo UNIMED"
-        className={styles.brandLogo}
-        width="76"
-        height="76"
-      />
-      <h2 className={styles.heading}>Masuk ke Akun</h2>
-
-      {/* Auth-level error banner (from authentication-error state) */}
-      {authError && (
-        <div className={styles.authErrorBanner} role="alert" aria-live="assertive">
-          <span className={styles.authErrorIcon} aria-hidden="true">⚠</span>
-          {authError}
+      <div className={styles.leftColumn}>
+        <div className={styles.brandingContent}>
+          <img
+            src="/assets/logo-unimed.png"
+            alt="Logo UNIMED"
+            className={styles.brandLogoLarge}
+            width="140"
+            height="140"
+          />
+          <h2 className={styles.universityName}>Universitas Negeri Medan</h2>
         </div>
-      )}
+      </div>
+
+      <div className={styles.rightColumn}>
+        <h2 className={styles.heading}>Masuk ke Akun</h2>
+
+        {/* Auth-level error banner (from authentication-error state) */}
+        {authError && (
+          <div className={styles.authErrorBanner} role="alert" aria-live="assertive">
+            <span className={styles.authErrorIcon} aria-hidden="true">⚠</span>
+            {authError}
+          </div>
+        )}
 
       <form
         className={styles.form}
@@ -237,6 +244,7 @@ export function LoginForm({
         </button>
 
       </form>
+      </div>
     </section>
   );
 }
