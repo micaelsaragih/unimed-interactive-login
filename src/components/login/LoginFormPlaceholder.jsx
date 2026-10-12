@@ -1,23 +1,6 @@
-/**
- * LoginFormPlaceholder — structural placeholder for the login form.
- *
- * Per INTERACTION_SPEC.md the login form must NOT be interactive or focusable
- * before the `unlocked` state is reached. This placeholder component:
- *
- *   - Renders the correct form structure in the DOM for layout purposes.
- *   - Is fully inaccessible (aria-hidden, inert, tabIndex=-1 on all controls)
- *     when `available` is false.
- *   - Uses conditional rendering (`available` gate) so keyboard users cannot
- *     reach it via Tab before the puzzle is solved.
- *
- * In Phase 5 this will be replaced by the real LoginForm component.
- */
-
 import styles from './LoginFormPlaceholder.module.css';
 
 export function LoginFormPlaceholder({ available }) {
-  // Do not render at all until the unlocked state is reached.
-  // This is the safest approach per INTERACTION_SPEC.md §7.1.
   if (!available) return null;
 
   return (
@@ -52,7 +35,6 @@ export function LoginFormPlaceholder({ available }) {
               placeholder="Masukkan kata sandi"
               disabled
             />
-            {/* Password visibility toggle — wired in Phase 5 */}
             <button
               type="button"
               className={styles.visibilityToggle}
@@ -73,7 +55,6 @@ export function LoginFormPlaceholder({ available }) {
   );
 }
 
-/* Inline eye icon — no external dependency */
 function EyeIcon() {
   return (
     <svg

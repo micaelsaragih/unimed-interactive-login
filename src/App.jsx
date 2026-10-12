@@ -1,19 +1,3 @@
-/**
- * App — root component for HMJ UNIMED Interactive Login.
- *
- * Phase 5: Functional login form integrated.
- *
- * State machine (INTERACTION_SPEC.md §3):
- *   locked            → unlocking          (puzzle solved)
- *   unlocking         → unlocked           (padlock animation complete)
- *   unlocked          → authenticating     (form submitted)
- *   authenticating    → authenticated      (auth service confirmed success)
- *   authenticating    → authentication-error (auth service returned failure)
- *   authentication-error → authenticating  (user retries)
- *
- * Authentication is handled by src/lib/authentication.js.
- * The form is not rendered before the `unlocked` state is reached.
- */
 
 import { useEffect, useRef, useState } from 'react';
 import { PuzzleBoard } from './components/puzzle/PuzzleBoard';
@@ -69,14 +53,12 @@ export default function App() {
     return () => window.clearTimeout(timer);
   }, [screen]);
 
-  // ── Puzzle solved → begin unlock sequence ─────────────────────────────
   function handlePuzzleSolved() {
     setFlowState((prev) =>
       prev.status === 'locked' ? { status: 'unlocking' } : prev
     );
   }
 
-  // ── Padlock animation complete → reveal form ──────────────────────────
   function handleUnlockComplete() {
     setFlowState((prev) =>
       prev.status === 'unlocking' ? { status: 'unlocked' } : prev
@@ -88,7 +70,6 @@ export default function App() {
     setScreen((current) => current === 'dissolving' ? 'login' : current);
   }
 
-  // ── Form submitted with valid input → authenticating ──────────────────
   function handleAuthenticating() {
     setFlowState((prev) =>
       prev.status === 'unlocked' || prev.status === 'authentication-error'
@@ -97,7 +78,6 @@ export default function App() {
     );
   }
 
-  // ── Auth service returned failure ─────────────────────────────────────
   function handleAuthError(message) {
     setFlowState((prev) =>
       prev.status === 'authenticating'
@@ -106,16 +86,12 @@ export default function App() {
     );
   }
 
-  // ── Auth service confirmed success ────────────────────────────────────
-  // NOTE: Only called when the real backend confirms authentication.
-  // The puzzle completion alone does NOT trigger this.
   function handleAuthenticated() {
     setFlowState((prev) =>
       prev.status === 'authenticating' ? { status: 'authenticated' } : prev
     );
   }
 
-  // ── Derived state helpers ─────────────────────────────────────────────
   const isFormVisible =
     flowState.status === 'unlocked' ||
     flowState.status === 'authenticating' ||
@@ -158,12 +134,10 @@ export default function App() {
       )}
       <div className="app-background-overlay" aria-hidden="true" />
 
-      {/* ── Main ───────────────────────────────────────────────── */}
       <main className={`app-main${screen === 'login' ? ' login-main' : ''}`} id="main-content">
         {screen !== 'login' ? (
           <div className={`content-card${screen === 'dissolving' ? ' content-card-dissolving' : ''}`}>
 
-          {/* ── Intro ──────────────────────────────────────────── */}
           <section className="intro-section" aria-labelledby="page-title">
             <h1 id="page-title" className="page-title">
               Akses Sistem
@@ -176,7 +150,6 @@ export default function App() {
             )}
           </section>
 
-          {/* ── Puzzle ─────────────────────────────────────────── */}
           <section className="puzzle-section" aria-label="Area puzzle">
             <PuzzleBoard
               onSolved={handlePuzzleSolved}
@@ -186,7 +159,6 @@ export default function App() {
             />
           </section>
 
-          {/* ── Padlock ────────────────────────────────────────── */}
           <section className="padlock-section" aria-label="Status akses">
             <Padlock
               state={padlockState}
@@ -202,8 +174,6 @@ export default function App() {
             )}
           </section>
 
-          {/* ── Login form ─────────────────────────────────────── */}
-          {/* Form entry waits until both visual exit animations have completed. */}
           </div>
         ) : (
           <div className="login-view">

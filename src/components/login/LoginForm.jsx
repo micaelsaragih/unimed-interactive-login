@@ -1,25 +1,3 @@
-/**
- * LoginForm — functional login form for HMJ UNIMED.
- *
- * Only rendered after the padlock animation completes (state = `unlocked`).
- * The parent App component is responsible for enforcing that rule.
- *
- * Local responsibilities:
- *   - Collecting and validating username/email + password.
- *   - Managing password visibility toggle.
- *   - Managing loading and error UI states.
- *   - Preventing duplicate submissions.
- *   - Calling the authentication service and reporting the result.
- *
- * Props:
- *   onAuthenticating  — called when a valid submission starts (→ authenticating)
- *   onAuthError       — called when auth fails, with a user-friendly message
- *   onAuthenticated   — called only on confirmed success from the auth service
- *
- * Authentication is delegated to src/lib/authentication.js.
- * This component never fabricates a successful login.
- */
-
 import { useEffect, useRef, useState } from 'react';
 import { login } from '../../lib/authentication';
 import styles from './LoginForm.module.css';
@@ -39,12 +17,10 @@ export function LoginForm({
   // Focus the username field when the form first mounts (after unlock).
   const usernameRef = useRef(null);
   useEffect(() => {
-    // Small delay so the form's reveal animation completes first.
     const timer = setTimeout(() => usernameRef.current?.focus(), 380);
     return () => clearTimeout(timer);
   }, []);
 
-  // ── Client-side validation ───────────────────────────────────────────
   function validate() {
     const errors = {};
     const u = username.trim();
@@ -60,26 +36,20 @@ export function LoginForm({
     return errors;
   }
 
-  // ── Form submission ──────────────────────────────────────────────────
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Prevent duplicate submissions
     if (isSubmitting) return;
 
-    // Clear previous field-level errors
     setFieldErrors({});
 
-    // Validate before calling the service
     const errors = validate();
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
-      // Focus the first invalid field
       if (errors.username) usernameRef.current?.focus();
       return;
     }
 
-    // Transition app state to authenticating
     setIsSubmitting(true);
     onAuthenticating();
 
@@ -88,17 +58,14 @@ export function LoginForm({
     setIsSubmitting(false);
 
     if (result.success) {
-      // Clear sensitive input before handing off
       setPassword('');
       onAuthenticated();
     } else {
-      // Clear password on failure for security
       setPassword('');
       onAuthError(result.error);
     }
   }
 
-  // ── Clear a field error as soon as the user types ────────────────────
   function handleUsernameChange(e) {
     setUsername(e.target.value);
     if (fieldErrors.username) {
@@ -134,7 +101,6 @@ export function LoginForm({
       <div className={styles.rightColumn}>
         <h2 className={styles.heading}>Masuk ke Akun</h2>
 
-        {/* Auth-level error banner (from authentication-error state) */}
         {authError && (
           <div className={styles.authErrorBanner} role="alert" aria-live="assertive">
             <span className={styles.authErrorIcon} aria-hidden="true">⚠</span>
@@ -148,7 +114,6 @@ export function LoginForm({
         noValidate
         aria-busy={isSubmitting ? 'true' : 'false'}
       >
-        {/* ── Username / e-mail ───────────────────────────────── */}
         <div className={styles.field}>
           <label htmlFor="login-username" className={styles.label}>
             Nama Pengguna atau Email
@@ -176,7 +141,6 @@ export function LoginForm({
           )}
         </div>
 
-        {/* ── Password ─────────────────────────────────────────── */}
         <div className={styles.field}>
           <label htmlFor="login-password" className={styles.label}>
             Kata Sandi
@@ -214,7 +178,6 @@ export function LoginForm({
           )}
         </div>
 
-        {/* ── Submit ───────────────────────────────────────────── */}
         <button
           type="submit"
           className={styles.submitBtn}
@@ -235,8 +198,6 @@ export function LoginForm({
     </section>
   );
 }
-
-// ── Inline SVG icons (no external dependency) ─────────────────────────────
 
 function EyeIcon() {
   return (

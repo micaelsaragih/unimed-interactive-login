@@ -1,16 +1,3 @@
-/**
- * PuzzleBoard — 3×3 swap puzzle using the official UNIMED logo.
- *
- * Mechanism: select-and-swap.
- *   - All 9 cells always display a tile (no empty space).
- *   - Clicking one tile selects it (highlighted ring).
- *   - Clicking a second tile swaps the two selected tiles.
- *   - Clicking the already-selected tile deselects it (cancel).
- *
- * Board logic is fully delegated to src/lib/puzzle.js (pure, testable).
- * onSolved is called exactly once, guarded by a ref.
- */
-
 import { useMemo, useRef, useState } from 'react';
 import {
   applySwap,
@@ -58,10 +45,8 @@ export function PuzzleBoard({
   const [board, setBoard] = useState(() => createRandomBoard());
   const [moveCount, setMoveCount] = useState(0);
   const [solved, setSolved] = useState(false);
-  /** Index of the currently selected tile, or null if none selected. */
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  // Guard: onSolved must fire at most once per puzzle instance.
   const solvedCalledRef = useRef(false);
   const particles = useMemo(
     () => dissolveSeed === null ? [] : createParticles(dissolveSeed),
@@ -69,22 +54,17 @@ export function PuzzleBoard({
   );
 
   function handleTileClick(clickedIndex) {
-    // Ignore clicks when board is locked
     if (disabled || solved) return;
 
     if (selectedIndex === null) {
-      // First click — select this tile
       setSelectedIndex(clickedIndex);
       return;
     }
 
     if (selectedIndex === clickedIndex) {
-      // Clicking the same tile again → deselect
       setSelectedIndex(null);
       return;
     }
-
-    // Second click on a different tile → swap
     const newBoard = applySwap(board, selectedIndex, clickedIndex);
     setSelectedIndex(null);
     setBoard(newBoard);
@@ -106,7 +86,6 @@ export function PuzzleBoard({
 
   return (
     <div className={styles.wrapper} aria-hidden={dissolving}>
-      {/* 3×3 grid — all 9 cells always filled */}
       <div className={styles.boardStage}>
         <div
           className={styles.grid}
@@ -150,7 +129,6 @@ export function PuzzleBoard({
         )}
       </div>
 
-      {/* Controls row — hidden once solved */}
       {!solved && !disabled && (
         <div className={styles.controls}>
           <span
@@ -171,14 +149,12 @@ export function PuzzleBoard({
         </div>
       )}
 
-      {/* Selection hint — shown while a tile is selected */}
       {!solved && !disabled && selectedIndex !== null && (
         <p className={styles.selectionHint} role="status" aria-live="polite">
           Keping dipilih — klik keping lain untuk menukar posisi.
         </p>
       )}
 
-      {/* Success message */}
       {solved && (
         <p className={styles.successMsg} role="status" aria-live="polite">
           ✓ Puzzle berhasil diselesaikan!
