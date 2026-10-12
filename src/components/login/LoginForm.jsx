@@ -16,7 +16,7 @@
  *   onAuthError       — called when auth fails, with a user-friendly message
  *   onAuthenticated   — called only on confirmed success from the auth service
  *
- * Authentication is delegated to src/lib/authentication.ts.
+ * Authentication is delegated to src/lib/authentication.js.
  * This component never fabricates a successful login.
  */
 
@@ -24,33 +24,20 @@ import { useEffect, useRef, useState } from 'react';
 import { login } from '../../lib/authentication';
 import styles from './LoginForm.module.css';
 
-interface LoginFormProps {
-  onAuthenticating: () => void;
-  onAuthError: (message: string) => void;
-  onAuthenticated: () => void;
-  /** Auth-level error message from the parent state machine (authentication-error state). */
-  authError?: string;
-}
-
-interface FieldErrors {
-  username?: string;
-  password?: string;
-}
-
 export function LoginForm({
   onAuthenticating,
   onAuthError,
   onAuthenticated,
   authError,
-}: LoginFormProps) {
+}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [fieldErrors, setFieldErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Focus the username field when the form first mounts (after unlock).
-  const usernameRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef(null);
   useEffect(() => {
     // Small delay so the form's reveal animation completes first.
     const timer = setTimeout(() => usernameRef.current?.focus(), 380);
@@ -58,8 +45,8 @@ export function LoginForm({
   }, []);
 
   // ── Client-side validation ───────────────────────────────────────────
-  function validate(): FieldErrors {
-    const errors: FieldErrors = {};
+  function validate() {
+    const errors = {};
     const u = username.trim();
 
     if (!u) {
@@ -74,7 +61,7 @@ export function LoginForm({
   }
 
   // ── Form submission ──────────────────────────────────────────────────
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     // Prevent duplicate submissions
@@ -112,14 +99,14 @@ export function LoginForm({
   }
 
   // ── Clear a field error as soon as the user types ────────────────────
-  function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleUsernameChange(e) {
     setUsername(e.target.value);
     if (fieldErrors.username) {
       setFieldErrors((prev) => ({ ...prev, username: undefined }));
     }
   }
 
-  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handlePasswordChange(e) {
     setPassword(e.target.value);
     if (fieldErrors.password) {
       setFieldErrors((prev) => ({ ...prev, password: undefined }));

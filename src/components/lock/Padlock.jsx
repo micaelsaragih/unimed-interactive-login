@@ -21,21 +21,12 @@
 import { useEffect, useRef } from 'react';
 import styles from './Padlock.module.css';
 
-type PadlockState = 'locked' | 'unlocking' | 'unlocked';
-
-interface PadlockProps {
-  state: PadlockState;
-  onUnlockComplete?: () => void;
-  exiting?: boolean;
-  onExitComplete?: () => void;
-}
-
 export function Padlock({
   state,
   onUnlockComplete,
   exiting = false,
   onExitComplete,
-}: PadlockProps) {
+}) {
   /** Prevents onUnlockComplete from firing more than once per unlock sequence. */
   const callbackFiredRef = useRef(false);
   const exitCallbackFiredRef = useRef(false);
@@ -98,7 +89,7 @@ export function Padlock({
     }
   }
 
-  function handleExitAnimationEnd(event: React.AnimationEvent<HTMLDivElement>) {
+  function handleExitAnimationEnd(event) {
     if (event.target !== event.currentTarget || !exiting || exitCallbackFiredRef.current) {
       return;
     }

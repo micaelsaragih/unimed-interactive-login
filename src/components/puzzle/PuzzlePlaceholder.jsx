@@ -12,12 +12,7 @@
 
 import styles from './PuzzlePlaceholder.module.css';
 
-interface PuzzlePlaceholderProps {
-  logoSrc: string;
-  disabled?: boolean;
-}
-
-export function PuzzlePlaceholder({ logoSrc, disabled = false }: PuzzlePlaceholderProps) {
+export function PuzzlePlaceholder({ logoSrc, disabled = false }) {
   // 3×3 grid: indices 0-7 are tiles; index 8 is the empty space.
   const cells = Array.from({ length: 9 }, (_, i) => i);
 

@@ -7,42 +7,20 @@
  *   - Clicking a second tile swaps the two selected tiles.
  *   - Clicking the already-selected tile deselects it (cancel).
  *
- * Board logic is fully delegated to src/lib/puzzle.ts (pure, testable).
+ * Board logic is fully delegated to src/lib/puzzle.js (pure, testable).
  * onSolved is called exactly once, guarded by a ref.
  */
 
-import { useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
   applySwap,
   createRandomBoard,
   isSolved,
-  type Board,
 } from '../../lib/puzzle';
 import { PuzzleTile } from './PuzzleTile';
 import styles from './PuzzleBoard.module.css';
 
-interface PuzzleBoardProps {
-  /** Called exactly once when the puzzle reaches its solved arrangement. */
-  onSolved: () => void;
-  /** When true, all tile interaction and the reshuffle button are locked. */
-  disabled?: boolean;
-  dissolving?: boolean;
-  dissolveSeed: number | null;
-}
-
-interface Particle {
-  cell: number;
-  left: number;
-  top: number;
-  size: number;
-  opacity: number;
-  dx: number;
-  dy: number;
-  duration: number;
-  delay: number;
-}
-
-function createParticles(seed: number): Particle[] {
+function createParticles(seed) {
   let value = seed || 1;
   const random = () => {
     value ^= value << 13;
@@ -76,12 +54,12 @@ export function PuzzleBoard({
   disabled = false,
   dissolving = false,
   dissolveSeed,
-}: PuzzleBoardProps) {
-  const [board, setBoard] = useState<Board>(() => createRandomBoard());
+}) {
+  const [board, setBoard] = useState(() => createRandomBoard());
   const [moveCount, setMoveCount] = useState(0);
   const [solved, setSolved] = useState(false);
   /** Index of the currently selected tile, or null if none selected. */
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   // Guard: onSolved must fire at most once per puzzle instance.
   const solvedCalledRef = useRef(false);
@@ -90,7 +68,7 @@ export function PuzzleBoard({
     [dissolveSeed],
   );
 
-  function handleTileClick(clickedIndex: number) {
+  function handleTileClick(clickedIndex) {
     // Ignore clicks when board is locked
     if (disabled || solved) return;
 
@@ -163,7 +141,7 @@ export function PuzzleBoard({
                       '--dy': `${particle.dy}px`,
                       '--duration': `${particle.duration}ms`,
                       '--delay': `${particle.delay}ms`,
-                    } as CSSProperties}
+                    }}
                   />
                 ))}
               </div>

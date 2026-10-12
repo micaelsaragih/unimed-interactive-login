@@ -13,13 +13,7 @@
 
 import styles from './PadlockPlaceholder.module.css';
 
-type PadlockState = 'locked' | 'unlocking' | 'unlocked';
-
-interface PadlockPlaceholderProps {
-  state?: PadlockState;
-}
-
-export function PadlockPlaceholder({ state = 'locked' }: PadlockPlaceholderProps) {
+export function PadlockPlaceholder({ state = 'locked' }) {
   const isOpen = state === 'unlocked';
   const isAnimating = state === 'unlocking';
 

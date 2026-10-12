@@ -1,5 +1,5 @@
 /**
- * authentication.ts — Authentication service boundary.
+ * authentication.js — Authentication service boundary.
  *
  * This module defines the interface between the login form and the backend
  * authentication system. It is intentionally separated from UI code so that
@@ -13,10 +13,9 @@
  *
  * TO INTEGRATE A REAL BACKEND:
  *   1. Replace the body of the `login` function with your actual HTTP call.
- *   2. Update the `LoginResult` type if your backend returns additional fields.
- *   3. Store any session token using your auth provider's recommended method
+ *   2. Store any session token using your auth provider's recommended method
  *      (e.g. httpOnly cookie set by the server, or a short-lived JWT in memory).
- *   4. Never log or store the plain-text password.
+ *   3. Never log or store the plain-text password.
  *
  * Example integration comment block:
  *
@@ -41,17 +40,6 @@
  * ──────────────────────────────────────────────────────────────────────────
  */
 
-export interface LoginCredentials {
-  /** Username or email address entered by the user. */
-  username: string;
-  /** Password entered by the user. Never logged or stored client-side. */
-  password: string;
-}
-
-export type LoginResult =
-  | { success: true }
-  | { success: false; error: string };
-
 /**
  * Submits credentials to the configured authentication backend.
  *
@@ -60,8 +48,11 @@ export type LoginResult =
  * are caught internally.
  *
  * Throws only for unexpected, unrecoverable errors (e.g. programming mistakes).
+ *
+ * @param {{ username: string, password: string }} credentials
+ * @returns {Promise<{ success: true } | { success: false, error: string }>}
  */
-export async function login(credentials: LoginCredentials): Promise<LoginResult> {
+export async function login(credentials) {
   // ── Validation guard — should not be reached; the form validates first ──
   if (!credentials.username.trim() || !credentials.password) {
     return { success: false, error: 'Lengkapi semua kolom yang wajib diisi.' };
@@ -92,7 +83,7 @@ export async function login(credentials: LoginCredentials): Promise<LoginResult>
   //     return { success: true };
   //   }
   //
-  //   const data: { message?: string } = await response.json().catch(() => ({}));
+  //   const data = await response.json().catch(() => ({}));
   //   return {
   //     success: false,
   //     error: data.message ?? 'Kredensial tidak valid. Silakan coba lagi.',

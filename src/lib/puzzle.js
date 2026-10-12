@@ -1,5 +1,5 @@
 /**
- * puzzle.ts — Pure puzzle logic for the 3×3 swap puzzle.
+ * puzzle.js — Pure puzzle logic for the 3×3 swap puzzle.
  *
  * No React, no DOM. All functions are pure and independently testable.
  *
@@ -29,27 +29,24 @@
 export const GRID_SIZE = 3;
 export const TOTAL_TILES = GRID_SIZE * GRID_SIZE; // 9
 
-/** A flat array of 9 tile IDs (1–9) representing the current board state. */
-export type Board = number[];
-
 /**
  * Returns the canonical solved board: [1, 2, 3, 4, 5, 6, 7, 8, 9].
  */
-export function createSolvedBoard(): Board {
+export function createSolvedBoard() {
   return Array.from({ length: TOTAL_TILES }, (_, i) => i + 1);
 }
 
 /**
  * Returns the { row, col } of a given board index (0-indexed flat position).
  */
-export function indexToPos(index: number): { row: number; col: number } {
+export function indexToPos(index) {
   return { row: Math.floor(index / GRID_SIZE), col: index % GRID_SIZE };
 }
 
 /**
  * Converts a (row, col) pair to a flat board index.
  */
-export function posToIndex(row: number, col: number): number {
+export function posToIndex(row, col) {
   return row * GRID_SIZE + col;
 }
 
@@ -58,7 +55,7 @@ export function posToIndex(row: number, col: number): number {
  * Returns the SAME reference if indexA === indexB or either is out of range.
  * Never mutates the input board.
  */
-export function applySwap(board: Board, indexA: number, indexB: number): Board {
+export function applySwap(board, indexA, indexB) {
   if (
     indexA === indexB ||
     indexA < 0 || indexA >= TOTAL_TILES ||
@@ -74,7 +71,7 @@ export function applySwap(board: Board, indexA: number, indexB: number): Board {
 /**
  * Returns true when the board matches the solved arrangement [1,2,3,4,5,6,7,8,9].
  */
-export function isSolved(board: Board): boolean {
+export function isSolved(board) {
   const solved = createSolvedBoard();
   return board.length === TOTAL_TILES && board.every((v, i) => v === solved[i]);
 }
@@ -83,7 +80,7 @@ export function isSolved(board: Board): boolean {
  * Returns the number of tiles that are NOT in their solved position.
  * Useful for providing progress feedback (0 = solved).
  */
-export function countMisplaced(board: Board): number {
+export function countMisplaced(board) {
   return board.reduce((acc, v, i) => (v !== i + 1 ? acc + 1 : acc), 0);
 }
 
@@ -95,7 +92,7 @@ export function countMisplaced(board: Board): number {
  * Uses a Fisher-Yates shuffle. Since every permutation is reachable by swaps,
  * no parity correction is needed.
  */
-export function createRandomBoard(): Board {
+export function createRandomBoard() {
   let board = createSolvedBoard();
 
   // Fisher-Yates shuffle

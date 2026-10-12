@@ -11,7 +11,7 @@
  *   authenticating    → authentication-error (auth service returned failure)
  *   authentication-error → authenticating  (user retries)
  *
- * Authentication is handled by src/lib/authentication.ts.
+ * Authentication is handled by src/lib/authentication.js.
  * The form is not rendered before the `unlocked` state is reached.
  */
 
@@ -19,18 +19,17 @@ import { useEffect, useRef, useState } from 'react';
 import { PuzzleBoard } from './components/puzzle/PuzzleBoard';
 import { Padlock } from './components/lock/Padlock';
 import { LoginForm } from './components/login/LoginForm';
-import type { LoginFlowState } from './types/index';
 import './App.css';
 
 const PUZZLE_BACKGROUND_VIDEO = '/assets/bg-login-wisuda-hijau.mp4';
 const LOGIN_BACKGROUND_IMAGE = '/assets/bg.jpg';
 
 export default function App() {
-  const [flowState, setFlowState] = useState<LoginFlowState>({ status: 'locked' });
-  const [screen, setScreen] = useState<'puzzle' | 'settling' | 'dissolving' | 'login'>('puzzle');
-  const [dissolveSeed, setDissolveSeed] = useState<number | null>(null);
+  const [flowState, setFlowState] = useState({ status: 'locked' });
+  const [screen, setScreen] = useState('puzzle');
+  const [dissolveSeed, setDissolveSeed] = useState(null);
   const [backgroundVideoUnavailable, setBackgroundVideoUnavailable] = useState(false);
-  const backgroundVideoRef = useRef<HTMLVideoElement>(null);
+  const backgroundVideoRef = useRef(null);
 
   useEffect(() => {
     const video = backgroundVideoRef.current;
@@ -99,7 +98,7 @@ export default function App() {
   }
 
   // ── Auth service returned failure ─────────────────────────────────────
-  function handleAuthError(message: string) {
+  function handleAuthError(message) {
     setFlowState((prev) =>
       prev.status === 'authenticating'
         ? { status: 'authentication-error', message }

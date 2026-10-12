@@ -22,16 +22,6 @@
 import styles from './PuzzleTile.module.css';
 import { GRID_SIZE } from '../../lib/puzzle';
 
-interface PuzzleTileProps {
-  /** 1–9: identifies which logo slice this tile carries. */
-  tileId: number;
-  /** Whether this tile is the currently selected (first-click) tile. */
-  selected?: boolean;
-  onClick: () => void;
-  disabled: boolean;
-  dissolving?: boolean;
-}
-
 const LOGO_SRC = '/assets/logo-unimed.png';
 
 export function PuzzleTile({
@@ -40,7 +30,7 @@ export function PuzzleTile({
   onClick,
   disabled,
   dissolving = false,
-}: PuzzleTileProps) {
+}) {
   // Original grid column and row based on tileId (1-indexed → 0-indexed).
   const col = (tileId - 1) % GRID_SIZE;
   const row = Math.floor((tileId - 1) / GRID_SIZE);

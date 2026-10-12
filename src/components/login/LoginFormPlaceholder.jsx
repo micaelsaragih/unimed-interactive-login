@@ -15,11 +15,7 @@
 
 import styles from './LoginFormPlaceholder.module.css';
 
-interface LoginFormPlaceholderProps {
-  available: boolean;
-}
-
-export function LoginFormPlaceholder({ available }: LoginFormPlaceholderProps) {
+export function LoginFormPlaceholder({ available }) {
   // Do not render at all until the unlocked state is reached.
   // This is the safest approach per INTERACTION_SPEC.md §7.1.
   if (!available) return null;
